@@ -1,0 +1,59 @@
+#antes de tudo, abrir o Git Bash e por os seguintes cods: 1(mkdir api), 2(ls), 3(cd api) e 4(code .) vai abrir o VS code. Ja no VS code vamos ao terminal e iremos por os seguintes cods (npm init), (npm i express --save), (npm i mysql) e cria uma pasta chama (index.js).
+
+ Vamos "corrigir" alguns pequenos detalhes, que irao estar destacados no cod
+ (  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js", <====
+  "scripts": {
+    "dev": "node --watch index.js" <====
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3",
+    "mysql": "^2.18.1"
+  }
+}
+)
+
+
+# const express = require('express')
+const mysql =  require('mysql')
+
+const app = express()
+const port = 3333
+
+// Configuração do banco de dados
+const db =  mysql.createConnection({
+    host: 'localhost',
+    user: 'root', (#usuario que vai esta em seu pc pessoal)
+    password: '', (#senha que vai esta em seu pc pessoal)
+    database: 'CAVALO' #Aqui vamos por o nome do banco de dados
+})                      que colocamos no MySQL por exemplo.#
+
+db.connect((err) =>{
+    if(err) {
+        console.log('Erro ao tentar conectar ao banco de dados:', err)
+    } else {
+        console.log('conectado ao banco de dados MySQL')
+    }
+})
+
+app.get('/users', (req, res) => {
+    const sql = 'SELECT * FROM users'
+    db.query(sql, (err, result) => {
+        if(er){
+            console.error('Erro ao executar ao consultar:', err);
+            res.status(500).json({ error: 'Erro interno do servidor' });
+        } else {
+            res.json(result);
+        }
+    })
+})
+
+
+// Iniciar servidor
+app.listen(port, () => {
+    console.log(`servidor está conectado na porta ${port}`)
+})
